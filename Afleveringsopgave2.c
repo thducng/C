@@ -1,4 +1,4 @@
-          /* Afleveringsopgave 2 
+/* Afleveringsopgave 2 
    Brug af if else kaeder og ? operator.
    Skrevet af Thuan Duc Nguyen */
 
