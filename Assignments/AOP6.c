@@ -4,56 +4,57 @@
 #include <stdio.h>
 #include <math.h>
 
-double f(double x);
-double sum_of_f(double a, double n, double h);
+void scan_for_n(double *n_h, double *n_g);
+double h_function(double x);
+double g_function(double x);
+double sum_function(double a, double b, double n, double (*f)(double));
 double h_equation(double a, double b, double n);
-double trap(double a, double b, double n, double h, double (*f)(double), double (*sum_of_f)(double, double, double));
-
-/* Kommentarer som ikke kunne skrives i kommentarfeltet med indrykningerne(IKKE EN DEL AF PROGRAMMET!)
+double trap(double a, double b, double n, double (*f)(double));
   
-  Ville det være bedre at skrive funktionen på linje 10 og 57 således?:
-  double trap(double a, double b, double n, double h,
-              double (*f)(double),
-              double (*sum_of_f)(double, double, double)); 
-  
-  Tænkte at det ville se mere overskueligt ud, men var ikke sikker.
-  Jeg havde også overvejet at anvende funktionen f(double x) ved linje 47, således det ser sådan ud:
-
-  sum = sum + f(a+x);
-
-  Men så skal jeg nede ved linje 58, skrive en aktuel parameter som jeg ikke kunne tænke mig frem til. 
-  Ville bare spørge om du havde et tip, eller om det overhovedet er muligt :)
-  
-  */
-
 int main(void){
-  double a = -2, b = 2, n = 128, h, result;
+  double a_h = -2, b_h = 2, a_g = 0, b_g = 3.14150, n_h = 0, n_g = 0, result_h, result_g;
   
-  h = h_equation(a, b, n);
-  result = trap(a, b, n, h, &f, &sum_of_f);
-  printf("The approximate area under the function is: %.2lf \n", result);
+  scan_for_n(&n_h, &n_g);
+  result_h = trap(a_h, b_h, n_h, &h_function);
+  result_g = trap(a_g, b_g, n_g, &g_function);
   
+  printf("The approximate area under the functions h(x) and g(x) is: %.2lf and %.2lf \n", result_h,result_g);
   return 0;
 }
 
-double f(double x){
+/* Scans for n */
+void scan_for_n(double *n_h, double *n_g){
+  printf("Enter value of n for h(x), then g(x): \n");
+  scanf("%lf %lf", n_h, n_g);
+}
+
+/* Function h(x) */
+double h_function(double x){
   return sqrt(4 - pow(x,2));
 }
 
-double sum_of_f(double a, double n, double h){
-  double sum = 0, x = h;
+/* Function g(x) */
+double g_function(double x){
+  return pow(x,2) * sin(x);
+}
+
+/* Equation for h */
+double h_equation(double a, double b, double n){
+  return (b - a)/ n;
+}
+
+/* Summation of functions (A part of trapezoidal rule) */
+double sum_function(double a, double b, double n, double (*f)(double)){
+  double sum = 0, h = h_equation(a,b,n), x = h;
   
   for(n ;n > 0; n--){
-    sum = sum + sqrt(4 - pow((a+x),2));
+    sum = sum + f(a+x);
     x = x + h;
   }
   return 2*sum;
 }
 
-double h_equation(double a, double b, double n){
-  return (b - a)/ n;
-}
-
-double trap(double a, double b, double n, double h, double (*f)(double), double (*sum_of_f)(double, double, double)){
-  return(h/2) * ((f(a)) + (f(b)) + (sum_of_f(a,n,h)));
+/* Trapezoidal rule function */
+double trap(double a, double b, double n, double (*f)(double)){
+  return (h_equation(a,b,n)/2) * (f(a) + f(b) + sum_function(a,b,n,f));
 }
