@@ -1,46 +1,43 @@
-/* Afleveringsopgave 8 - Opgave 1 side 488
-   Skrevet af Thuan Duc Nguyen */
-
 #include <stdio.h>
 #include <string.h>
 #define limit 100
 
-char scaninput(char *procode);
-char *seperation(char *procode, char *ware, char *pro, char *quali);
-void printfunc(char *procode, char *ware, char *pro, char *quali);
+void printfunc(char *ware, char *pro, char *quali);
+char *seperation(char *input, char *pware, char *ppro, char *pquali);
 
 int main(void){
-  char procode[limit],
+  char input[limit],
        ware[limit], pro[limit], quali[limit];
-  
-  while(*procode != 'q'){
-    scaninput(procode);
-    seperation(procode, ware, pro, quali);
-    printfunc(procode, ware, pro, quali);
-  } 
-  
+ 
+  seperation(input, ware, pro, quali);
+  printfunc(ware, pro, quali);
+
   return 0;
 }
 
-char scaninput(char *procode){
-  printf("Enter Product Code or q: ");
-  fgets(procode, limit, stdin);
+void printfunc(char *ware, char *pro, char *quali){
+  printf("Warehouse: %s\n", ware);
+  printf("Product: %s\n", pro);
+  printf("Qualifiers: %s\n",quali);
 }
 
-char *seperation(char *procode, char *ware, char *pro, char *quali){
-  strncpy(ware, &procode[0], 3);
-  ware[3] = '\0';
+char *seperation(char *input, char *pware, char *ppro, char *pquali){
+  int count, b = 0;
+  strcpy(input, "ATL1203S14");
   
-  strncpy(pro, &procode[3], 4);
-  pro[4] = '\0';
-  
-  strncpy(quali, &procode[7], 3);
-  quali[3] = '\0';
-}
-
-void printfunc(char *procode, char *ware, char *pro, char *quali){
-  if(*procode != 'q'){
-    printf("\nWarehouse: %s\n", ware);
-    printf("Product: %s\n", pro);
-    printf("Qualifiers: %s\n\n", quali);
+  for(count = 0; count < limit; ++count){
+    if(*input >= 'A' && *input <= 'Z' && *(input-1) > '9' && *(input+1) > '9'){
+      strncpy(pware, input, 3);
+      pware[3] = '\0';
+      input = input + 3;}
+    else if(*input >= '0' && *input <= '9' && b != 1){
+      strncpy(ppro, input, 4);
+      ppro[4] = '\0';
+      ++b;
+      input = input + 4;}
+    else{
+      strncpy(pquali, input, 3);
+      pquali[3] = '\0';
+      count = count + limit;}
+  }
 }
