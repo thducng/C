@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <strings.h>
+#define limit 100
+
+int main(void){
+  char input[limit], output[limit];
+  
+  while (*input != q){
+    scan(&input);
+    add_ending(input, output);
+    print(input, output);
+  }
+  
+  return 0;
+}
+
+void scan(*input){
+  printf("Enter a english noun: ");
+  fgets(input, limit, stdin);
+}
+
+char add_ending(char *input, char *output){
+  strcpy(output, input);
+  
+  if(strrchr(*input, 'y'))
+    strcat(output[strlen(input)], "ies");
+  else if(strrchar(*input, 's'))
+    strcat(output[strlen(input)], "es");
+  else if(strrchar(*input, 'ch') || strrchar(*input, 'sh'))
+    strcat(output[strlen(input)-1], "es");
+  else
+    strcat(output, "s");
+}
+
+void print(char *input, char *output){
+  printf(" %s\n%s", input, output);
+}
+
+
