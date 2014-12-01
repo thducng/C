@@ -14,6 +14,8 @@
 #define TEAMNAME_SIZE 10
 #define THOUSAND 1000
 #define SEVEN 7
+#define WIN_POINT 3
+#define DRAW_POINT 1
 
 typedef struct match{
   char day_of_week[NAMEDAY_SIZE];
@@ -41,18 +43,22 @@ typedef struct round{
   match match[MAX_MATCH];
 }round;
 
+// Prototypes //
 void read_copy_file(round *round);
 void do_one_of_the_problems(round *round, table *table);
 void do_all_problems(round *round, table *table);
+
+// Prototypes for assignments //
 void solve_problem_one(round *round);
 void solve_problem_two(round *round);
 void solve_problem_three(round *round);
 void solve_problem_four(round *round);
 void solve_problem_five(round *round, char *u, char *k1, char *k2);
 void solve_problem_six(round *round, table *table);
+
+// Prototypes for helping functions //
 void print_match(int i, int j, round *round);
 void printfunc(round *round);
-void input_stats_to_table(table *table, int i, int j, int k, int *m, int *gf, int *ga, int *p, int *w, int *d, int *l);
 void print_table(table *table);
 void sort_table(table *table);
 void swap_position(table *table, int j);
@@ -126,7 +132,7 @@ void do_one_of_the_problems(round *round, table *table){
       printf("Enter a weekday(Fre), and a timeframe(18.05 19.05): ");
       scanf("%s %s %s", u, k1, k2);
       //printf("\nProblem 5: \n");
-      //solve_problem_five(round, u, k1, k2);
+      //solve_problem_five(round, u, k1, k2);  Kan muligvis løses ved at dele k1 op i to, og derefter lægges de to sammen.
       printf("Invalid \n %3s \n %5s \n %5s \n", u, k1, k2);
       break;
     case 6:
@@ -251,7 +257,6 @@ void solve_problem_five(round *round, char *u, char *k1, char *k2){
 }
 void solve_problem_six(round *round, table *table){
   int i = 0, j = 0, k = 0;
-  int m = 0, w = 0, d = 0, l = 0, gf = 0, ga = 0, gd = 0, p = 0;
   char teams[NUMBER_OF_TEAMS][TEAMNAME_SIZE] = { "AGF" , "FCM" , "VFF" , "RFC" ,
                                                  "OB"  , "SDR" , "BIF" , "FCV" ,
                                                  "AAB" , "FCK" , "EFB" , "FCN" };
@@ -260,35 +265,35 @@ void solve_problem_six(round *round, table *table){
     for(i = 0, j = 0; i < MAX_ROUND; i++){
       for(j = 0; j < MAX_MATCH; j++){
         if(strcmp(teams[k], round[i].match[j].h_team) == 0){
-           m++;
-           gf += round[i].match[j].h_goal;
-           ga += round[i].match[j].a_goal;
+           table[k].matches += 1;
+           table[k].goal_f += round[i].match[j].h_goal;
+           table[k].goal_a += round[i].match[j].a_goal;
            if(round[i].match[j].h_goal > round[i].match[j].a_goal){
-             p += 3;
-             w++;}
+             table[k].points += WIN_POINT;
+             table[k].wins += 1;}
            else if(round[i].match[j].h_goal == round[i].match[j].a_goal){
-             p += 1;
-             d++;}
+             table[k].points += DRAW_POINT;
+             table[k].draws += 1;}
            else
-             l++;
+             table[k].loss += 1;
         }
         if(strcmp(teams[k], round[i].match[j].a_team) == 0){
-          m++;
-          gf += round[i].match[j].a_goal;
-          ga += round[i].match[j].h_goal;
+          table[k].matches += 1;
+          table[k].goal_f += round[i].match[j].a_goal;
+          table[k].goal_a += round[i].match[j].h_goal;
           if(round[i].match[j].h_goal < round[i].match[j].a_goal){
-            p += 3;
-            w++;}
+            table[k].points += WIN_POINT;
+            table[k].wins += 1;}
           else if(round[i].match[j].h_goal == round[i].match[j].a_goal){
-            p += 1;
-            d++;}
+            table[k].points += DRAW_POINT;
+            table[k].draws += 1;}
           else
-            l++;
+            table[k].loss += 1;
         }
       }
     }
     strcpy(table[k].team, teams[k]);
-    input_stats_to_table(table, i, j, k, &m, &gf, &ga, &p, &w, &d, &l);
+    table[k].goal_d = (table[k].goal_f - table[k].goal_a);
   }
   sort_table(table);
   print_table(table);
@@ -317,17 +322,6 @@ void printfunc(round *round){
 }
 
 // Helping functions for problem six //
-void input_stats_to_table(table *table, int i, int j, int k, int *m, int *gf, int *ga, int *p, int *w, int *d, int *l){
-  table[k].matches = *m;
-  table[k].wins = *w;
-  table[k].draws = *d;
-  table[k].loss = *l;
-  table[k].goal_f = *gf;
-  table[k].goal_a = *ga;
-  table[k].goal_d = *gf-*ga;
-  table[k].points = *p;
-  *m = 0, *gf = 0, *ga = 0, *p = 0, *w = 0, *d = 0, *l = 0;
-}
 void print_table(table *table){
   int i;
   
