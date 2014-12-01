@@ -19,8 +19,7 @@ typedef struct match{
   char day_of_week[NAMEDAY_SIZE];
   int date_day;
   int date_month; 
-  int time_hour;
-  int time_min;
+  char time[TIME_SIZE];
   char h_team[TEAMNAME_SIZE];
   char a_team[TEAMNAME_SIZE];
   int h_goal;
@@ -49,14 +48,14 @@ void solve_problem_one(round *round);
 void solve_problem_two(round *round);
 void solve_problem_three(round *round);
 void solve_problem_four(round *round);
-void solve_problem_five(round *round);
+void solve_problem_five(round *round, char *u, char *k1, char *k2);
 void solve_problem_six(round *round, table *table);
 void print_match(int i, int j, round *round);
 void printfunc(round *round);
 void input_stats_to_table(table *table, int i, int j, int k, int *m, int *gf, int *ga, int *p, int *w, int *d, int *l);
 void print_table(table *table);
 void sort_table(table *table);
-void swap_position(table *temp, table *table, int j);
+void swap_position(table *table, int j);
 
 int main(int argc, char *argv[]){
   struct round round[MAX_ROUND];
@@ -81,16 +80,15 @@ void read_copy_file(round *round){
   superliga = fopen("superliga-2013-2014","r");
   for(i = 0, j = 0; i < MAX_ROUND; i++){
     for(j = 0; j < MAX_MATCH; j++){
-      fscanf(superliga," %s %d / %d %d . %d %s - %s %d - %d %lld . %lld", &round[i].match[j].day_of_week,
-                                                                          &round[i].match[j].date_day,
-                                                                          &round[i].match[j].date_month,
-                                                                          &round[i].match[j].time_hour,
-                                                                          &round[i].match[j].time_min,
-                                                                          &round[i].match[j].h_team,
-                                                                          &round[i].match[j].a_team,
-                                                                          &round[i].match[j].h_goal,
-                                                                          &round[i].match[j].a_goal,
-                                                                          &k, &l);
+      fscanf(superliga," %s %d / %d %s %s - %s %d - %d %lld . %lld", &round[i].match[j].day_of_week,
+                                                                     &round[i].match[j].date_day,
+                                                                     &round[i].match[j].date_month,
+                                                                     &round[i].match[j].time,
+                                                                     &round[i].match[j].h_team,
+                                                                     &round[i].match[j].a_team,
+                                                                     &round[i].match[j].h_goal,
+                                                                     &round[i].match[j].a_goal,
+                                                                     &k, &l);
       round[i].match[j].spectator = (k*THOUSAND)+l;
     }
   }
@@ -99,12 +97,14 @@ void read_copy_file(round *round){
 
 // Determine dialogue with user //
 void do_one_of_the_problems(round *round, table *table){
-  int i = 0;
-  
-  while(i != 10){
-  printf("\nEnter problem(1-6, 10 for exit): ");
+  int i = 1;
+  char u[NAMEDAY_SIZE] = {"Fre"},
+       k1[TIME_SIZE] = {"18.05"},
+       k2[TIME_SIZE] = {"19.05"};
+
+  printf("\nEnter problem(1-6): ");
   scanf("%d",&i);
-  
+    
   switch(i){
     case 1:
       printf("\nProblem 1: \n");
@@ -123,28 +123,34 @@ void do_one_of_the_problems(round *round, table *table){
       solve_problem_four(round);
       break;
     case 5:
-      printf("\nProblem 5: \n");
-      solve_problem_five(round);
+      printf("Enter a weekday(Fre), and a timeframe(18.05 19.05): ");
+      scanf("%s %s %s", u, k1, k2);
+      //printf("\nProblem 5: \n");
+      //solve_problem_five(round, u, k1, k2);
+      printf("Invalid \n %3s \n %5s \n %5s \n", u, k1, k2);
       break;
     case 6:
       printf("\nProblem 6: \n");
       solve_problem_six(round, table);
       break;
-    }
   }
 }
 void do_all_problems(round *round, table *table){
-  printf("\nProblem 1: \n");
+  char u[NAMEDAY_SIZE] = "Fre",
+       k1[TIME_SIZE] = "18.05",
+       k2[TIME_SIZE] = "19.05";
+  
+  printf("\nProblem 1: \n\n");
   solve_problem_one(round);
-  printf("\nProblem 2: \n");
+  printf("\nProblem 2: \n\n");
   solve_problem_two(round);
-  printf("\nProblem 3: \n");
+  printf("\nProblem 3: \n\n");
   solve_problem_three(round);
-  printf("\nProblem 4: \n");
+  printf("\nProblem 4: \n\n");
   solve_problem_four(round);
-  printf("\nProblem 5: \n");
-  solve_problem_five(round);
-  printf("\nProblem 6: \n");
+  printf("\nProblem 5: \n\n");
+  solve_problem_five(round, u, k1, k2);
+  printf("\nProblem 6: \n\n");
   solve_problem_six(round, table);
 }
 
@@ -233,11 +239,15 @@ void solve_problem_four(round *round){
   printf("Team %s, had %lld spectators at all home games.\n"
          "Which makes it the team with least spectators.\n", teams[team], few_spec);
 }
-void solve_problem_five(round *round){
-
-
-
-
+void solve_problem_five(round *round, char *u, char *k1, char *k2){
+  int i, j;
+  
+  for(i = 0, j = 0; i < MAX_ROUND; i++){
+      for(j = 0; j < MAX_MATCH; j++){
+        if(strcmp(u, round[i].match[j].day_of_week) == 0 && strcmp(k1, round[i].match[j].time) < 0 && strcmp(k2, round[i].match[j].time) > 0)
+          print_match(i, j, round);
+    }
+  }
 }
 void solve_problem_six(round *round, table *table){
   int i = 0, j = 0, k = 0;
@@ -286,11 +296,10 @@ void solve_problem_six(round *round, table *table){
 
 // Helping functions //
 void print_match(int i, int j, round *round){
-  printf(" %3s %#02d/%#02d %#02d.%#02d %3s - %3s %2d - %d %6lld \n", round[i].match[j].day_of_week,
+  printf(" %.3s %#0.2d/%#0.2d %.5s  %3.3s - %3.3s %2d -%2d %6.lld \n", round[i].match[j].day_of_week,
                                                                          round[i].match[j].date_day,
                                                                          round[i].match[j].date_month,
-                                                                         round[i].match[j].time_hour,
-                                                                         round[i].match[j].time_min,
+                                                                         round[i].match[j].time,
                                                                          round[i].match[j].h_team,
                                                                          round[i].match[j].a_team,
                                                                          round[i].match[j].h_goal,
@@ -322,7 +331,7 @@ void input_stats_to_table(table *table, int i, int j, int k, int *m, int *gf, in
 void print_table(table *table){
   int i;
   
-  printf("Nr.  Team    M    W    D    L    Gf   Ga   +/-   P \n\n");
+  printf("Nr.  Team    M    W    D    L    Gf   Ga   +/-    P \n\n");
   for(i = 0; i < NUMBER_OF_TEAMS; i++){
     printf("%#02d    %3s   %2d   %2d   %2d   %2d    %2d   %2d   %3d   %2d\n", i+1,
                                                                               table[i].team,
@@ -337,25 +346,24 @@ void print_table(table *table){
   }
 }
 void sort_table(table *table){
-  struct table temp[NUMBER_OF_TEAMS];
   int i = 0, j = 0;
   
   for(i = 0, j = 0; i < NUMBER_OF_TEAMS; i++){
     for(j = 0; j < NUMBER_OF_TEAMS; j++){
       if(table[j].points < table[j+1].points){
-        swap_position(temp, table, j);
+        swap_position(table, j);
       }
       else if(table[j].points == table[j+1].points){
         if(table[j].goal_d < table[j+1].goal_d){
-          swap_position(temp, table, j);
+          swap_position(table, j);
         }
         else if(table[j].goal_d == table[j+1].goal_d){
           if(table[j].goal_f < table[j+1].goal_f){
-            swap_position(temp, table, j);
+            swap_position(table, j);
           }
           else if(table[j].goal_f == table[j+1].goal_f){
             if(strcmp(table[j].team, table[j+1].team) > 0){
-              swap_position(temp, table, j);
+              swap_position(table, j);
             }
           }
         }
@@ -363,7 +371,9 @@ void sort_table(table *table){
     }
   }
 }
-void swap_position(table *temp, table *table, int j){
+void swap_position(table *table, int j){
+  struct table temp[1];
+  
   temp[0] = table[j];
   table[j] = table[j+1];
   table[j+1] = temp[0];
