@@ -2,7 +2,6 @@
 // Thuan Duc Nguyen - tnguy14@student.aau.dk                      //
 // Software - A405c                                               //
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -43,7 +42,6 @@ typedef struct round{
   match match[MAX_MATCH];
 }round;
 
-
 void read_copy_file(round *round);
 void do_one_of_the_problems(round *round, table *table);
 void do_all_problems(round *round, table *table);
@@ -56,8 +54,9 @@ void solve_problem_six(round *round, table *table);
 void print_match(int i, int j, round *round);
 void printfunc(round *round);
 void input_stats_to_table(table *table, int i, int j, int k, int *m, int *gf, int *ga, int *p, int *w, int *d, int *l);
-int point_cmp(const void *A, const void *B);
 void print_table(table *table);
+void sort_table(table *table);
+void swap_position(table *temp, table *table, int j);
 
 int main(int argc, char *argv[]){
   struct round round[MAX_ROUND];
@@ -106,21 +105,31 @@ void do_one_of_the_problems(round *round, table *table){
   printf("\nEnter problem(1-6, 10 for exit): ");
   scanf("%d",&i);
   
-    switch(i){
-      case 1:
-        solve_problem_one(round);
-        break;
-      case 2:
-        solve_problem_two(round);
-        break;
-      case 3:
-        solve_problem_three(round);
-      case 4:
-        solve_problem_four(round);
-      case 5:
-        solve_problem_five(round);
-      case 6:
-        solve_problem_six(round, table);
+  switch(i){
+    case 1:
+      printf("\nProblem 1: \n");
+      solve_problem_one(round);
+      break;
+    case 2:
+      printf("\nProblem 2: \n");
+      solve_problem_two(round);
+      break;
+    case 3:
+      printf("\nProblem 3: \n");
+      solve_problem_three(round);
+      break;
+    case 4:
+      printf("\nProblem 4: \n");
+      solve_problem_four(round);
+      break;
+    case 5:
+      printf("\nProblem 5: \n");
+      solve_problem_five(round);
+      break;
+    case 6:
+      printf("\nProblem 6: \n");
+      solve_problem_six(round, table);
+      break;
     }
   }
 }
@@ -271,7 +280,7 @@ void solve_problem_six(round *round, table *table){
     strcpy(table[k].team, teams[k]);
     input_stats_to_table(table, i, j, k, &m, &gf, &ga, &p, &w, &d, &l);
   }
-  //qsort((void *)&table, NUMBER_OF_TEAMS, sizeof(table), &point_cmp);
+  sort_table(table);
   print_table(table);
 }
 
@@ -297,6 +306,8 @@ void printfunc(round *round){
     }
   }
 }
+
+// Helping functions for problem six //
 void input_stats_to_table(table *table, int i, int j, int k, int *m, int *gf, int *ga, int *p, int *w, int *d, int *l){
   table[k].matches = *m;
   table[k].wins = *w;
@@ -307,36 +318,6 @@ void input_stats_to_table(table *table, int i, int j, int k, int *m, int *gf, in
   table[k].goal_d = *gf-*ga;
   table[k].points = *p;
   *m = 0, *gf = 0, *ga = 0, *p = 0, *w = 0, *d = 0, *l = 0;
-}
-int point_cmp(const void *A, const void *B){
-  const table *a = A, *b = B;
-
-  if(a->points < b->points){
-    return -1;}
-  else if(a->points > b->points)
-    return 1;
-  else if(a->points == b->points){
-    if(a->goal_d < b->goal_d)
-      return -1;
-    else if(a->goal_d > b->goal_d)
-      return 1;
-    else if(a->goal_d == b->goal_d){
-      if(a->goal_f < b->goal_f)
-        return -1;
-      else if(a->goal_f < b->goal_f)
-        return 1;
-      else if(a->goal_f == b->goal_f){
-        if(strcmp(a->team, b->team) < 0)
-          return 1;
-        else if(strcmp(a->team, b->team) > 0)
-          return -1;
-        else return 0;
-      }
-      else return 0;
-    }
-    else return 0;
-  }
-  else return 0;
 }
 void print_table(table *table){
   int i;
@@ -355,6 +336,44 @@ void print_table(table *table){
                                                                               table[i].points);
   }
 }
+void sort_table(table *table){
+  struct table temp[NUMBER_OF_TEAMS];
+  int i = 0, j = 0;
+  
+  for(i = 0, j = 0; i < NUMBER_OF_TEAMS; i++){
+    for(j = 0; j < NUMBER_OF_TEAMS; j++){
+      if(table[j].points < table[j+1].points){
+        swap_position(temp, table, j);
+      }
+      else if(table[j].points == table[j+1].points){
+        if(table[j].goal_d < table[j+1].goal_d){
+          swap_position(temp, table, j);
+        }
+        else if(table[j].goal_d == table[j+1].goal_d){
+          if(table[j].goal_f < table[j+1].goal_f){
+            swap_position(temp, table, j);
+          }
+          else if(table[j].goal_f == table[j+1].goal_f){
+            if(strcmp(table[j].team, table[j+1].team) > 0){
+              swap_position(temp, table, j);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+void swap_position(table *temp, table *table, int j){
+  temp[0] = table[j];
+  table[j] = table[j+1];
+  table[j+1] = temp[0];
+}
+
+
+
+
+
+
 
 
 
