@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#define MAX_ROUND 33
-#define MAX_MATCH 6
+#define MAX_ROUND_PER_SEASON 33
+#define MAX_MATCH_PER_ROUND 6
 #define NAMEDAY_SIZE 4
 #define TIME_SIZE 6
 #define NUMBER_OF_TEAMS 12
@@ -17,6 +17,7 @@
 #define WIN_POINT 3
 #define DRAW_POINT 1
 
+// Structure "match" and "round" is for the file data, "table" is for the sixth assignment //
 typedef struct match{
   char day_of_week[NAMEDAY_SIZE];
   int date_day;
@@ -28,6 +29,9 @@ typedef struct match{
   int a_goal;
   long long spectator;
 }match;
+typedef struct round{
+  match match[MAX_MATCH_PER_ROUND];
+}round;
 typedef struct table{
   char team[TEAMNAME_SIZE];
   int matches;
@@ -39,16 +43,13 @@ typedef struct table{
   int goal_d;
   int points;
 }table;
-typedef struct round{
-  match match[MAX_MATCH];
-}round;
 
-// Prototypes //
+// Prototypes for pre-solving functions //
 void read_copy_file(round *round);
 void do_one_of_the_problems(round *round, table *table);
 void do_all_problems(round *round, table *table);
 
-// Prototypes for assignments //
+// Prototypes for all assignments //
 void solve_problem_one(round *round);
 void solve_problem_two(round *round);
 void solve_problem_three(round *round);
@@ -56,7 +57,7 @@ void solve_problem_four(round *round);
 void solve_problem_five(round *round, char *u, char *k1, char *k2);
 void solve_problem_six(round *round, table *table);
 
-// Prototypes for helping functions //
+// Prototypes for all the helping functions //
 void print_match(int i, int j, round *round);
 void print_all_matches(round *round);
 void sort_matches(match *matches, int k);
@@ -68,13 +69,14 @@ void print_table(table *table);
 void sort_table(table *table);
 void swap_position_table(table *table, int j);
 
+// Mainly for determine whether to have the user dialogue or not //
 int main(int argc, char *argv[]){
-  struct round round[MAX_ROUND];
+  struct round round[MAX_ROUND_PER_SEASON];
   struct table table[NUMBER_OF_TEAMS];
   
   read_copy_file(round);
   
-  if(argc != 1)
+  if(argc > 1 && strcmp(argv[1],"--print") == 0)
     do_all_problems(round, table);
   else
     do_one_of_the_problems(round, table);
@@ -82,15 +84,15 @@ int main(int argc, char *argv[]){
   return 0;
 }
 
-// Read file, and copy data //
+// Read given file and copy data into the program //
 void read_copy_file(round *round){
   FILE *superliga;
   int i, j;
   long long k, l;
 
   superliga = fopen("superliga-2013-2014","r");
-  for(i = 0, j = 0; i < MAX_ROUND; i++){
-    for(j = 0; j < MAX_MATCH; j++){
+  for(i = 0, j = 0; i < MAX_ROUND_PER_SEASON; i++){
+    for(j = 0; j < MAX_MATCH_PER_ROUND; j++){
       fscanf(superliga," %s %d / %d %s %s - %s %d - %d %lld . %lld", &round[i].match[j].day_of_week,
                                                                      &round[i].match[j].date_day,
                                                                      &round[i].match[j].date_month,
@@ -106,7 +108,7 @@ void read_copy_file(round *round){
   fclose(superliga);
 }
 
-// Determine dialogue with user //
+// Solve one problem of the users wish, or do all of them //
 void do_one_of_the_problems(round *round, table *table){
   int i = 1;
   char u[NAMEDAY_SIZE] = {"Fre"},
@@ -152,7 +154,7 @@ void do_one_of_the_problems(round *round, table *table){
 void do_all_problems(round *round, table *table){
   char u[NAMEDAY_SIZE] = "Fre",
        k1[TIME_SIZE] = "18.05",
-       k2[TIME_SIZE] = "19.05";
+       k2[TIME_SIZE] = "19.05"; // Pre-set values for problem five //
   
   printf("\n--------------------Problem 1---------------------- \n\n");
   solve_problem_one(round);
@@ -169,22 +171,23 @@ void do_all_problems(round *round, table *table){
   solve_problem_six(round, table);
 }
 
-// Main body for solving the assignments //
+// Main function for solving the assignments //
 void solve_problem_one(round *round){
-  int i, j;
+  int i = 0, j = 0;
   
-  for(i = 0, j = 0; i < MAX_ROUND; i++){
-    for(j = 0; j < MAX_MATCH; j++){
+  for(i = 0, j = 0; i < MAX_ROUND_PER_SEASON; i++){
+    for(j = 0; j < MAX_MATCH_PER_ROUND; j++){
       if(round[i].match[j].h_goal + round[i].match[j].a_goal >= SEVEN)
         print_match(i, j, round);
     }
   }
 }
 void solve_problem_two(round *round){
-  int i, j, temp_res = 0, res = 0, round_res = 0;
+  int i = 0, j = 0, 
+      temp_res = 0, res = 0, round_res = 0;
   
-  for(i = 0, j = 0; i < MAX_ROUND; i++){
-    for(j = 0; j < MAX_MATCH; j++){
+  for(i = 0, j = 0; i < MAX_ROUND_PER_SEASON; i++){
+    for(j = 0; j < MAX_MATCH_PER_ROUND; j++){
       temp_res += round[i].match[j].h_goal + round[i].match[j].a_goal;
     }
     if(res < temp_res){
@@ -205,8 +208,8 @@ void solve_problem_three(round *round){
                                                  "AAB" , "FCK" , "EFB" , "FCN" };
   
   for(k = 0, i = 0, j = 0; k < NUMBER_OF_TEAMS; k++){
-    for(i = 0, j = 0; i < MAX_ROUND; i++){
-      for(j = 0; j < MAX_MATCH; j++){
+    for(i = 0, j = 0; i < MAX_ROUND_PER_SEASON; i++){
+      for(j = 0; j < MAX_MATCH_PER_ROUND; j++){
         if(strcmp(teams[k],round[i].match[j].h_team) == 0){
           if(round[i].match[j].h_goal > round[i].match[j].a_goal)
             h_win++;
@@ -235,8 +238,8 @@ void solve_problem_four(round *round){
                                                  "AAB" , "FCK" , "EFB" , "FCN" };
   
   for(k = 0, i = 0, j = 0; k < NUMBER_OF_TEAMS; k++){
-    for(i = 0, j = 0; i < MAX_ROUND; i++){
-      for(j = 0; j < MAX_MATCH; j++){
+    for(i = 0, j = 0; i < MAX_ROUND_PER_SEASON; i++){
+      for(j = 0; j < MAX_MATCH_PER_ROUND; j++){
         if(strcmp(teams[k],round[i].match[j].h_team) == 0){
           temp_spec += round[i].match[j].spectator;
         }
@@ -255,11 +258,11 @@ void solve_problem_four(round *round){
          "Which makes it the team with least spectators.\n", teams[team], few_spec);
 }
 void solve_problem_five(round *round, char *u, char *k1, char *k2){
-  int i, j, k = 0;
-  struct match matches[MAX_MATCH*MAX_ROUND];
+  int i = 0, j = 0, k = 0;
+  struct match matches[MAX_MATCH_PER_ROUND*MAX_ROUND_PER_SEASON];
   
-  for(i = 0, j = 0; i < MAX_ROUND; i++){
-    for(j = 0; j < MAX_MATCH; j++){
+  for(i = 0, j = 0; i < MAX_ROUND_PER_SEASON; i++){
+    for(j = 0; j < MAX_MATCH_PER_ROUND; j++){
       if(strcmp(u, round[i].match[j].day_of_week) == 0 && strcmp(k1, round[i].match[j].time) <= 0 && strcmp(k2, round[i].match[j].time) >= 0){
         matches[k] = round[i].match[j];
         k++;
@@ -279,8 +282,8 @@ void solve_problem_six(round *round, table *table){
                                                  "AAB" , "FCK" , "EFB" , "FCN" };
   
   for(k = 0, i = 0, j = 0; k < NUMBER_OF_TEAMS; k++){
-    for(i = 0, j = 0; i < MAX_ROUND; i++){
-      for(j = 0; j < MAX_MATCH; j++){
+    for(i = 0, j = 0; i < MAX_ROUND_PER_SEASON; i++){
+      for(j = 0; j < MAX_MATCH_PER_ROUND; j++){
         if(strcmp(teams[k], round[i].match[j].h_team) == 0)
           input_home_games_into_table(round, table, i, j, k);
         if(strcmp(teams[k], round[i].match[j].a_team) == 0)
@@ -294,7 +297,7 @@ void solve_problem_six(round *round, table *table){
   print_table(table);
 }
 
-// Helping functions //
+// Helping functions or extra functions //
 void print_match(int i, int j, round *round){
   printf(" %.3s %#0.2d/%#0.2d %.5s  %3.3s - %3.3s %2d -%2d %6.lld \n", round[i].match[j].day_of_week,
                                                                          round[i].match[j].date_day,
@@ -307,17 +310,17 @@ void print_match(int i, int j, round *round){
                                                                          round[i].match[j].spectator);
 }
 void print_all_matches(round *round){
-  int i, j;
+  int i = 0, j = 0;
   
-  for(i = 0, j = 0; i < MAX_ROUND; i++){
+  for(i = 0, j = 0; i < MAX_ROUND_PER_SEASON; i++){
     printf("---------------------Round %d-----------------------\n",i+1);
-    for(j = 0; j < MAX_MATCH; j++){
+    for(j = 0; j < MAX_MATCH_PER_ROUND; j++){
       print_match(i, j, round);
     }
   }
 }
 
-// Helping functions for problem five //
+// Helping functions for only problem five //
 void sort_matches(match *matches, int k){
   int i = 0, j = 0;
   
@@ -329,7 +332,7 @@ void sort_matches(match *matches, int k){
   }
 }
 void print_matches(match *matches, int k){
-  int i;
+  int i = 0;
   
   for(i = 0; i < k; i++){
     printf(" %.3s %#0.2d/%#0.2d %.5s  %3.3s - %3.3s %2d -%2d %6.lld \n", matches[i].day_of_week,
@@ -351,7 +354,7 @@ void swap_position_matches(match *matches, int j){
   matches[j+1] = temp[0];
 }
 
-// Helping functions for problem six //
+// Helping functions for only problem six //
 void input_home_games_into_table(round *round, table *table, int i, int j, int k){
   table[k].matches += 1;
   table[k].goal_f += round[i].match[j].h_goal;
@@ -379,7 +382,7 @@ void input_away_games_into_table(round *round, table *table, int i, int j, int k
     table[k].loss += 1;
 }
 void print_table(table *table){
-  int i;
+  int i = 0;
   
   printf("Nr.  Team    M    W    D    L    Gf   Ga   +/-    P \n\n");
   for(i = 0; i < NUMBER_OF_TEAMS; i++){
