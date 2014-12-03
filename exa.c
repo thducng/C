@@ -110,14 +110,17 @@ void read_copy_file(round *round){
 
 // Solve one problem of the users wish, or do all of them //
 void do_one_of_the_problems(round *round, table *table){
-  int i = 1;
-  char u[NAMEDAY_SIZE] = {"Fre"},
-       k1[TIME_SIZE] = {"18.05"},
-       k2[TIME_SIZE] = {"19.05"};
-
-  printf("\nEnter problem(1-6, 7 for all matches): ");
+  int i = 0;
+  char u[NAMEDAY_SIZE], k1[TIME_SIZE], k2[TIME_SIZE];
+  
+  printf("\n __________________________\n"
+           ": Select an assignment:    :\n"
+           ": Assignment from 1 to 6   :\n"
+           ": Print All Assignment 7   :\n"
+           ": Print All Matches 8      :\n"
+           ":__________________________:\n\n");
   scanf("%d",&i);
-    
+  
   switch(i){
     case 1:
       printf("\n--------------------Problem 1---------------------- \n\n");
@@ -147,8 +150,16 @@ void do_one_of_the_problems(round *round, table *table){
       solve_problem_six(round, table);
       break;
     case 7:
+      printf("\n----------------All Assignments---------------------- \n\n");
+      do_all_problems(round, table);
+      break;
+    case 8:
       printf("\n--------------------All Matches---------------------- \n\n");
       print_all_matches(round);
+      break;
+    default:
+      printf("Invalid Choice\n\n");
+      break;
   }
 }
 void do_all_problems(round *round, table *table){
