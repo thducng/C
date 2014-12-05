@@ -92,14 +92,14 @@ void read_copy_file(ROUND *round){
   for(i = 0, j = 0; i < MAX_ROUND_PER_SEASON; i++){
     for(j = 0; j < MAX_MATCH_PER_ROUND; j++){
       fscanf(superliga," %s %d / %d %s %s - %s %d - %d %s", &round[i].match[j].day_of_week,
-                                                                     &round[i].match[j].date_day,
-                                                                     &round[i].match[j].date_month,
-                                                                     &round[i].match[j].time,
-                                                                     &round[i].match[j].h_team,
-                                                                     &round[i].match[j].a_team,
-                                                                     &round[i].match[j].h_goal,
-                                                                     &round[i].match[j].a_goal,
-                                                                     &spec_in_string);
+                                                            &round[i].match[j].date_day,
+                                                            &round[i].match[j].date_month,
+                                                            &round[i].match[j].time,
+                                                            &round[i].match[j].h_team,
+                                                            &round[i].match[j].a_team,
+                                                            &round[i].match[j].h_goal,
+                                                            &round[i].match[j].a_goal,
+                                                            &spec_in_string);
                                                                      
       round[i].match[j].spectator = spec_string_to_integer(spec_in_string);
     }
@@ -274,7 +274,10 @@ void solve_problem_five(ROUND *round, char *u, char *k1, char *k2){
   
   for(i = 0, j = 0; i < MAX_ROUND_PER_SEASON; i++){
     for(j = 0; j < MAX_MATCH_PER_ROUND; j++){
-      if(strcmp(u, round[i].match[j].day_of_week) == 0 && strcmp(k1, round[i].match[j].time) <= 0 && strcmp(k2, round[i].match[j].time) >= 0){
+      if(strcmp(u, round[i].match[j].day_of_week) == 0 &&
+         strcmp(k1, round[i].match[j].time) <= 0 && 
+         strcmp(k2, round[i].match[j].time) >= 0){
+         
         matches[k] = round[i].match[j];
         k++;
       }
@@ -332,16 +335,12 @@ void print_all_matches(ROUND *round){
   }
 }
 int spec_string_to_integer(char *spec_s){
-  int thousands_int, hundreds_int;
   char *thousands_s, *hundreds_s;
   char *dot = ".";
   
   if(strchr(spec_s,'.') != 0){
     thousands_s = strtok(spec_s, dot);
-    hundreds_s = strtok(NULL, " ");
-    
-    thousands_int = atoi(thousands_s);
-    hundreds_int = atoi(hundreds_s);
+    hundreds_s  = strtok(NULL, " ");
     
     return (atoi(thousands_s)*THOUSAND)+atoi(hundreds_s);}
   else
@@ -373,30 +372,30 @@ int goal_cmp(const void *match1, const void* match2){
 
 // Helping functions for only problem six //
 void input_home_games_into_table(ROUND *round, TABLE *table, int i, int j, int k){
-  table[k].matches += 1;
-  table[k].goal_f += round[i].match[j].h_goal;
-  table[k].goal_a += round[i].match[j].a_goal;
+  table[k].matches  += 1;
+  table[k].goal_f   += round[i].match[j].h_goal;
+  table[k].goal_a   += round[i].match[j].a_goal;
   if(round[i].match[j].h_goal > round[i].match[j].a_goal){
     table[k].points += WIN_POINT;
-    table[k].wins += 1;}
+    table[k].wins   += 1;}
   else if(round[i].match[j].h_goal == round[i].match[j].a_goal){
     table[k].points += DRAW_POINT;
-    table[k].draws += 1;}
+    table[k].draws  += 1;}
   else
-    table[k].loss += 1;
+    table[k].loss   += 1;
 }
 void input_away_games_into_table(ROUND *round, TABLE *table, int i, int j, int k){
-  table[k].matches += 1;
-  table[k].goal_f += round[i].match[j].a_goal;
-  table[k].goal_a += round[i].match[j].h_goal;
+  table[k].matches  += 1;
+  table[k].goal_f   += round[i].match[j].a_goal;
+  table[k].goal_a   += round[i].match[j].h_goal;
   if(round[i].match[j].h_goal < round[i].match[j].a_goal){
     table[k].points += WIN_POINT;
-    table[k].wins += 1;}
+    table[k].wins   += 1;}
   else if(round[i].match[j].h_goal == round[i].match[j].a_goal){
     table[k].points += DRAW_POINT;
-    table[k].draws += 1;}
+    table[k].draws  += 1;}
   else
-    table[k].loss += 1;
+    table[k].loss   += 1;
 }
 void print_table(TABLE *table){
   int i = 0;
@@ -416,8 +415,8 @@ void print_table(TABLE *table){
   }
 }
 int point_goal_name_cmp(const void *team1, const void *team2){
-  int point_cmp = ((TABLE *)team2)->points - ((TABLE *)team1)->points,
-      goal_diff_cmp = ((TABLE *)team2)->goal_d - ((TABLE *)team1)->goal_d,
+  int point_cmp      = ((TABLE *)team2)->points - ((TABLE *)team1)->points,
+      goal_diff_cmp  = ((TABLE *)team2)->goal_d - ((TABLE *)team1)->goal_d,
       goal_total_cmp = ((TABLE *)team2)->goal_f - ((TABLE *)team1)->goal_f;
   
   if(point_cmp != 0)
@@ -429,21 +428,3 @@ int point_goal_name_cmp(const void *team1, const void *team2){
   else
     return strcmp(((TABLE *)team1)->team,((TABLE *)team2)->team);  
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
