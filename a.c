@@ -242,7 +242,7 @@ void solve_problem_three(ROUND *round){
 }
 void solve_problem_four(ROUND *round){
   int i = 0, j = 0, k = 0, team = 0; 
-  long long temp_spec = 0, few_spec = 0;
+  long long temp_spec = 0, least_specs = 0;
   
   char teams[NUMBER_OF_TEAMS][TEAMNAME_SIZE] = { "AGF" , "FCM" , "VFF" , "RFC" ,
                                                  "OB"  , "SDR" , "BIF" , "FCV" ,
@@ -256,17 +256,17 @@ void solve_problem_four(ROUND *round){
         }
       }
     }
-    if(few_spec > temp_spec){
-      few_spec  = temp_spec;
+    if(least_specs > temp_spec){
+      least_specs  = temp_spec;
       team      = k;
       temp_spec = 0;}
-    else if(few_spec == 0)
-      few_spec  = temp_spec;
+    else if(least_specs == 0)
+      least_specs  = temp_spec;
     else
       temp_spec = 0;
   }
   printf("Team %s, had %lld spectators at all home games.\n"
-         "Which makes it the team with least spectators.\n", teams[team], few_spec);
+         "Which makes it the team with least spectators.\n", teams[team], least_specs);
 }
 void solve_problem_five(ROUND *round, char *u, char *k1, char *k2){
   int i = 0, j = 0, k = 0;

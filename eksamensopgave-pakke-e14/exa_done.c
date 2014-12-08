@@ -1,13 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<!-- saved from url=(0068)http://people.cs.aau.dk/normark/cgi-bin/homework/hand-in-catcher.cgi -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="utf-8"> <title>Kvittering</title><style type="text/css"></style></head> <body bgcolor="#ebd977" text="#000000" link="#0000ff" vlink="#0000ff"><h3>Du har afleveret eksamensopgaven i Imperativ Programmering 2014.</h3> <p><font size="2">Hvis du gen-afleverer opgaven overskrives den besvarelse, du netop har fremsendt.</font></p> <p>Du kan altid se alle dine afleverede programmer og evt. feedback til disse i <a href="http://people.cs.aau.dk/~normark/cgi-bin/homework/login.cgi">Mine Afleverede Programmer</a> (via login).</p> <div><p>Du skal udskrive, <em>underskrive</em> og aflevere denne <a href="http://people.cs.aau.dk/~normark/impr-14/eksamensopgave-pakke-e14/formular.pdf">formular</a> til studiesekretæren senest mandag 8. december 2014.</p> <p>Notér venligst denne kode, som skal angives på formularen: <font size="4"><b>1417785256</b></font>. (Koden vises også i 'Mine afleverede programmer').</p></div> <p><em>Det anbefales kraftigt at du udskriver denne side som dokumentation for, at du har afleveret opgaven.</em></p> <p>Her er det afleverede materiale:</p> <div style="margin-left:20px;"><div><p>Navn:  Thuan Duc Nguyen</p> <p>Afleveringsopgave nummer  11</p> <p>Kode:  1417785256</p> <p>Afleveret:  December 5, 2014, 14:14:16</p> <p>Email:  <a href="mailto:tnguy14@student.aau.dk">tnguy14@student.aau.dk</a></p> <p>Gruppe:  A410</p> <p>Retning:  software</p> <p>Tidsforbrug på opgaven:  1500   minutter</p> <p>Egen vurdering af udbytte:  10</p> <p>Angivet status:  Jeg kunne løse opgaven</p> <p>Jeg har tilladt at programmet anvendes anonymt i undervisningen og/eller på kursets web sider</p> <p>Det afleverede program:</p> <div style="margin-left:10px;"><table border="0"><tbody><tr><td width="*" valign="bottom" bgcolor="#ffffff"><pre>// Aalborg Universitet - Imperativ Programmering - Eksamensopgave //
+// Aalborg Universitet - Imperativ Programmering - Eksamensopgave //
 // Thuan Duc Nguyen - tnguy14@student.aau.dk                      //
 // Software - A405c                                               //
 
-#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
-#include &lt;string.h&gt;
-#include &lt;ctype.h&gt;
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 #define MAX_ROUND_PER_SEASON 33
 #define MAX_MATCH_PER_ROUND 6
 #define NAMEDAY_SIZE 4
@@ -76,7 +74,7 @@ int main(int argc, char *argv[]){
   
   read_copy_file(round);
   
-  if(argc &gt; 1 &amp;&amp; strcmp(argv[1],"--print") == 0)
+  if(argc > 1 && strcmp(argv[1],"--print") == 0)
     do_all_problems(round);
   else
     do_one_of_the_problems(round);
@@ -91,17 +89,17 @@ void read_copy_file(ROUND *round){
   char spec_in_string[256];
 
   superliga = fopen("superliga-2013-2014","r");
-  for(i = 0, j = 0; i &lt; MAX_ROUND_PER_SEASON; i++){
-    for(j = 0; j &lt; MAX_MATCH_PER_ROUND; j++){
-      fscanf(superliga," %s %d / %d %s %s - %s %d - %d %s", &amp;round[i].match[j].day_of_week,
-                                                            &amp;round[i].match[j].date_day,
-                                                            &amp;round[i].match[j].date_month,
-                                                            &amp;round[i].match[j].time,
-                                                            &amp;round[i].match[j].h_team,
-                                                            &amp;round[i].match[j].a_team,
-                                                            &amp;round[i].match[j].h_goal,
-                                                            &amp;round[i].match[j].a_goal,
-                                                            &amp;spec_in_string);
+  for(i = 0, j = 0; i < MAX_ROUND_PER_SEASON; i++){
+    for(j = 0; j < MAX_MATCH_PER_ROUND; j++){
+      fscanf(superliga," %s %d / %d %s %s - %s %d - %d %s", &round[i].match[j].day_of_week,
+                                                            &round[i].match[j].date_day,
+                                                            &round[i].match[j].date_month,
+                                                            &round[i].match[j].time,
+                                                            &round[i].match[j].h_team,
+                                                            &round[i].match[j].a_team,
+                                                            &round[i].match[j].h_goal,
+                                                            &round[i].match[j].a_goal,
+                                                            &spec_in_string);
                                                                      
       round[i].match[j].spectator = spec_string_to_integer(spec_in_string);
     }
@@ -120,7 +118,7 @@ void do_one_of_the_problems(ROUND *round){
            ": Print All Assignment: 7  :\n"
            ": Print All Matches: 8     :\n"
            ":__________________________:\n\n");
-  scanf("%d",&amp;i);
+  scanf("%d",&i);
   
   switch(i){
     case 1:
@@ -188,9 +186,9 @@ void do_all_problems(ROUND *round){
 void solve_problem_one(ROUND *round){
   int i = 0, j = 0;
   
-  for(i = 0, j = 0; i &lt; MAX_ROUND_PER_SEASON; i++){
-    for(j = 0; j &lt; MAX_MATCH_PER_ROUND; j++){
-      if(round[i].match[j].h_goal + round[i].match[j].a_goal &gt;= SEVEN)
+  for(i = 0, j = 0; i < MAX_ROUND_PER_SEASON; i++){
+    for(j = 0; j < MAX_MATCH_PER_ROUND; j++){
+      if(round[i].match[j].h_goal + round[i].match[j].a_goal >= SEVEN)
         print_match(i, j, round);
     }
   }
@@ -199,11 +197,11 @@ void solve_problem_two(ROUND *round){
   int i = 0, j = 0, 
       temp_res = 0, res = 0, round_res = 0;
   
-  for(i = 0, j = 0; i &lt; MAX_ROUND_PER_SEASON; i++){
-    for(j = 0; j &lt; MAX_MATCH_PER_ROUND; j++){
+  for(i = 0, j = 0; i < MAX_ROUND_PER_SEASON; i++){
+    for(j = 0; j < MAX_MATCH_PER_ROUND; j++){
       temp_res += round[i].match[j].h_goal + round[i].match[j].a_goal;
     }
-    if(res &lt; temp_res){
+    if(res < temp_res){
       res       = temp_res;
       round_res = i+1;
       temp_res  = 0;}
@@ -220,20 +218,20 @@ void solve_problem_three(ROUND *round){
                                                  "OB"  , "SDR" , "BIF" , "FCV" ,
                                                  "AAB" , "FCK" , "EFB" , "FCN" };
   
-  for(k = 0, i = 0, j = 0; k &lt; NUMBER_OF_TEAMS; k++){
-    for(i = 0, j = 0; i &lt; MAX_ROUND_PER_SEASON; i++){
-      for(j = 0; j &lt; MAX_MATCH_PER_ROUND; j++){
+  for(k = 0, i = 0, j = 0; k < NUMBER_OF_TEAMS; k++){
+    for(i = 0, j = 0; i < MAX_ROUND_PER_SEASON; i++){
+      for(j = 0; j < MAX_MATCH_PER_ROUND; j++){
         if(strcmp(teams[k],round[i].match[j].h_team) == 0){
-          if(round[i].match[j].h_goal &gt; round[i].match[j].a_goal)
+          if(round[i].match[j].h_goal > round[i].match[j].a_goal)
             h_win++;
         }
         if(strcmp(teams[k],round[i].match[j].a_team) == 0){
-          if(round[i].match[j].h_goal &lt; round[i].match[j].a_goal)
+          if(round[i].match[j].h_goal < round[i].match[j].a_goal)
             a_win++;
         }
       }
     }
-    if(a_win &gt; h_win){
+    if(a_win > h_win){
       printf("Team %3s, has won %d away games and %d home games. \n", teams[k], a_win, h_win);
       h_win = 0;
       a_win = 0;}
@@ -250,15 +248,15 @@ void solve_problem_four(ROUND *round){
                                                  "OB"  , "SDR" , "BIF" , "FCV" ,
                                                  "AAB" , "FCK" , "EFB" , "FCN" };
   
-  for(k = 0, i = 0, j = 0; k &lt; NUMBER_OF_TEAMS; k++){
-    for(i = 0, j = 0; i &lt; MAX_ROUND_PER_SEASON; i++){
-      for(j = 0; j &lt; MAX_MATCH_PER_ROUND; j++){
+  for(k = 0, i = 0, j = 0; k < NUMBER_OF_TEAMS; k++){
+    for(i = 0, j = 0; i < MAX_ROUND_PER_SEASON; i++){
+      for(j = 0; j < MAX_MATCH_PER_ROUND; j++){
         if(strcmp(teams[k],round[i].match[j].h_team) == 0){
           temp_spec += round[i].match[j].spectator;
         }
       }
     }
-    if(least_specs &gt; temp_spec){
+    if(least_specs > temp_spec){
       least_specs  = temp_spec;
       team      = k;
       temp_spec = 0;}
@@ -274,11 +272,11 @@ void solve_problem_five(ROUND *round, char *u, char *k1, char *k2){
   int i = 0, j = 0, k = 0;
   struct MATCH matches[MAX_MATCH_PER_ROUND*MAX_ROUND_PER_SEASON];
   
-  for(i = 0, j = 0; i &lt; MAX_ROUND_PER_SEASON; i++){
-    for(j = 0; j &lt; MAX_MATCH_PER_ROUND; j++){
-      if(strcmp(u, round[i].match[j].day_of_week) == 0 &amp;&amp;
-         strcmp(k1, round[i].match[j].time) &lt;= 0 &amp;&amp; 
-         strcmp(k2, round[i].match[j].time) &gt;= 0){
+  for(i = 0, j = 0; i < MAX_ROUND_PER_SEASON; i++){
+    for(j = 0; j < MAX_MATCH_PER_ROUND; j++){
+      if(strcmp(u, round[i].match[j].day_of_week) == 0 &&
+         strcmp(k1, round[i].match[j].time) <= 0 && 
+         strcmp(k2, round[i].match[j].time) >= 0){
          
         matches[k] = round[i].match[j];
         k++;
@@ -298,9 +296,9 @@ void solve_problem_six(ROUND *round){
                                                  "OB"  , "SDR" , "BIF" , "FCV" ,
                                                  "AAB" , "FCK" , "EFB" , "FCN" };
   
-  for(k = 0, i = 0, j = 0; k &lt; NUMBER_OF_TEAMS; k++){
-    for(i = 0, j = 0; i &lt; MAX_ROUND_PER_SEASON; i++){
-      for(j = 0; j &lt; MAX_MATCH_PER_ROUND; j++){
+  for(k = 0, i = 0, j = 0; k < NUMBER_OF_TEAMS; k++){
+    for(i = 0, j = 0; i < MAX_ROUND_PER_SEASON; i++){
+      for(j = 0; j < MAX_MATCH_PER_ROUND; j++){
         if(strcmp(teams[k], round[i].match[j].h_team) == 0)
           input_home_games_into_table(round, table, i, j, k);
         if(strcmp(teams[k], round[i].match[j].a_team) == 0)
@@ -329,9 +327,9 @@ void print_match(int i, int j, ROUND *round){
 void print_all_matches(ROUND *round){
   int i = 0, j = 0;
  
-  for(i = 0, j = 0; i &lt; MAX_ROUND_PER_SEASON; i++){
+  for(i = 0, j = 0; i < MAX_ROUND_PER_SEASON; i++){
     printf("---------------------Round %d-----------------------\n",i+1);
-    for(j = 0; j &lt; MAX_MATCH_PER_ROUND; j++){
+    for(j = 0; j < MAX_MATCH_PER_ROUND; j++){
       print_match(i, j, round);
     }
   }
@@ -353,7 +351,7 @@ int spec_string_to_integer(char *spec_s){
 void print_matches(MATCH *matches, int k){
   int i = 0;
   
-  for(i = 0; i &lt; k; i++){
+  for(i = 0; i < k; i++){
     printf(" %.3s %#0.2d/%#0.2d %.5s  %3.3s - %3.3s %2d -%2d %6.lld \n", matches[i].day_of_week,
                                                                          matches[i].date_day,
                                                                          matches[i].date_month,
@@ -366,8 +364,8 @@ void print_matches(MATCH *matches, int k){
   }
 }
 int goal_cmp(const void *match1, const void* match2){
-  int match1_int = (((MATCH *)match1)-&gt;h_goal + ((MATCH *)match1)-&gt;a_goal),
-      match2_int = (((MATCH *)match2)-&gt;h_goal + ((MATCH *)match2)-&gt;a_goal);
+  int match1_int = (((MATCH *)match1)->h_goal + ((MATCH *)match1)->a_goal),
+      match2_int = (((MATCH *)match2)->h_goal + ((MATCH *)match2)->a_goal);
 
   return match2_int - match1_int;
 }
@@ -377,7 +375,7 @@ void input_home_games_into_table(ROUND *round, TABLE *table, int i, int j, int k
   table[k].matches  += 1;
   table[k].goal_f   += round[i].match[j].h_goal;
   table[k].goal_a   += round[i].match[j].a_goal;
-  if(round[i].match[j].h_goal &gt; round[i].match[j].a_goal){
+  if(round[i].match[j].h_goal > round[i].match[j].a_goal){
     table[k].points += WIN_POINT;
     table[k].wins   += 1;}
   else if(round[i].match[j].h_goal == round[i].match[j].a_goal){
@@ -390,7 +388,7 @@ void input_away_games_into_table(ROUND *round, TABLE *table, int i, int j, int k
   table[k].matches  += 1;
   table[k].goal_f   += round[i].match[j].a_goal;
   table[k].goal_a   += round[i].match[j].h_goal;
-  if(round[i].match[j].h_goal &lt; round[i].match[j].a_goal){
+  if(round[i].match[j].h_goal < round[i].match[j].a_goal){
     table[k].points += WIN_POINT;
     table[k].wins   += 1;}
   else if(round[i].match[j].h_goal == round[i].match[j].a_goal){
@@ -403,7 +401,7 @@ void print_table(TABLE *table){
   int i = 0;
   
   printf("Nr.  Team    M    W    D    L    Gf   Ga   +/-    P \n\n");
-  for(i = 0; i &lt; NUMBER_OF_TEAMS; i++){
+  for(i = 0; i < NUMBER_OF_TEAMS; i++){
     printf("%#02d    %3s   %2d   %2d   %2d   %2d    %2d   %2d   %3d   %2d\n", i+1,
                                                                               table[i].team,
                                                                               table[i].matches,
@@ -417,9 +415,9 @@ void print_table(TABLE *table){
   }
 }
 int point_goal_name_cmp(const void *team1, const void *team2){
-  int point_cmp      = ((TABLE *)team2)-&gt;points - ((TABLE *)team1)-&gt;points,
-      goal_diff_cmp  = ((TABLE *)team2)-&gt;goal_d - ((TABLE *)team1)-&gt;goal_d,
-      goal_total_cmp = ((TABLE *)team2)-&gt;goal_f - ((TABLE *)team1)-&gt;goal_f;
+  int point_cmp      = ((TABLE *)team2)->points - ((TABLE *)team1)->points,
+      goal_diff_cmp  = ((TABLE *)team2)->goal_d - ((TABLE *)team1)->goal_d,
+      goal_total_cmp = ((TABLE *)team2)->goal_f - ((TABLE *)team1)->goal_f;
   
   if(point_cmp != 0)
     return point_cmp;
@@ -428,6 +426,5 @@ int point_goal_name_cmp(const void *team1, const void *team2){
   else if(goal_total_cmp != 0)
     return goal_total_cmp;
   else
-    return strcmp(((TABLE *)team1)-&gt;team,((TABLE *)team2)-&gt;team);  
+    return strcmp(((TABLE *)team1)->team,((TABLE *)team2)->team);  
 }
-</pre></td></tr></tbody></table></div> </div></div></body></html>

@@ -1,0 +1,4 @@
+Paladin      10     50-30     10
+Hunter	      5     35-15      7
+Rogue         2     16-05     12
+Warrior      12     10-36      3
