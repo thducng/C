@@ -1,0 +1,49 @@
+Functions!
+------------------------------------------------------------------------------------
+You can drag out the HS Arena Statistics and use this for the program.
+Dragging the otherone out, it will create other files, resetting the stats.
+
+------------------------------------------------------------------------------------
+
+how to choose:
+ - Write choice then enter like: 2 (enter)
+
+1. New Arena - Add a whole arena run.
+	       (Either lost 3 times or won 12 times)
+	       Should be entered like this:
+	       Rogue 12 2 or Rogue 3 3.
+
+2. View Statistics - Show statistics of any class, or by overall.
+                     Choose any class, or return by choosing 10 (enter)
+
+3. View Latest - Show the latest arena run entered
+
+4. View Most Wins - Show runs that has the most runs, can be multiple runs.
+
+5. Quit - Closes the program, Saves when close
+
+66. Reset all stats aka. deletes the statistic file
+
+
+------------------IMPORTANT!!!!!!!!!!------------------------------------------------
+
+Notice that the program cannot delete single runs, and only all runs!
+If misclick lets say "Rogue 10" instead of "Rogue 11", it is still fixable.
+
+Some possible scenerios!!!
+
+
+
+"Rogue 10 (oops, it should had been 11) 5" 
+Because of 5 is more than 3, the program will not save this run. 
+
+
+
+"Rogue 10 5" is not possible, but "Rogue 10 3" is possible. 
+Likewise "Rogue 12 2" is possible while, "Rogue 12 3" is not possible. 
+
+
+
+"rogue 12 2" is not possible, it has to be "Rogue".
+
+--------------------------------------------------------------------------------------
