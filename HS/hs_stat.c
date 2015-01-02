@@ -68,9 +68,15 @@ void new_arena(){
             
   a = class_number(&class);
   if(a && win == MAX_ARENA_WIN && lost < MAX_ARENA_LOSS)
-    add_run(a, win, lost);
+    add_run(a, win, =lost);
+    printf( "\n __________________________________ \n"
+              ": Run added successfully!          :\n"
+              ":__________________________________:\n");
   else if(a && win < MAX_ARENA_WIN && lost == MAX_ARENA_LOSS)
     add_run(a, win, lost);
+    printf( "\n __________________________________ \n"
+              ": Run added successfully!          :\n"
+              ":__________________________________:\n");
   else
     printf( "\n __________________________________ \n"
               ": Wrong inputs(Name, wins or loss) :\n"
