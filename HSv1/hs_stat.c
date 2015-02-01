@@ -1,7 +1,26 @@
 // HS Statistics    //
 // Thuan Duc Nguyen //
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <math.h>
+#define MAX_ARENA_WIN 12
+#define MAX_ARENA_LOSS 3
+#define TRUE 1
+#define FALSE 0
 
-#include "hs_stats.h"
+
+void user_dialogue();
+void new_arena();
+void view_stat();
+void view_late();
+void view_m_win();
+void reset();
+void add_run(int class, int win, int lost);
+void print_run(int class_num);
+void print_class(int i);
+
 
 int main(int argc, char *argv[]){
   int stop = FALSE;
@@ -119,9 +138,9 @@ void view_late(){
     i++;
   }
   printf( "\n __________________________________ \n"
-            ": Latest Arena Run                 :\n"
+            ": Latest Arena Run  Nr. %d         :\n"
             ":__________________________________:\n"
-            ":                                  :\n\n");
+            ":                                  :\n\n", i);
   print_class(class);
   printf(": Wins - %d   Loss - %d\n\n"
          ":__________________________________:\n\n",win, lost);
@@ -215,7 +234,7 @@ void print_run(int class_num){
   if(class_num != 0){
     printf( "\n __________________________________ \n");
     print_class(class_num);
-    printf( "\n __________________________________ \n");
+    printf( "\n:__________________________________: \n");
     while(fscanf(file, "%d %d %d", &class, &win, &lost) != EOF){
       if(class == class_num){
         win_c += win;
