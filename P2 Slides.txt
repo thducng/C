@@ -1,0 +1,47 @@
+Base Klasser: 1-2 min
+ - What is a base class
+
+Base List
+ - How is this list build
+ - How is it used
+
+Base Item
+ - How is this item build
+ - How is it used
+
+---------------------------------------------
+Serializer: 1-2 min
+ - Why we use this form for data saver
+
+Serialize
+ - How we serialize(short)
+
+Deserialize
+ - How we deserialize(short)
+
+---------------------------------------------
+Recommendation: 1-2 min
+
+Recommendation
+ - How it goes
+ - Why do this
+ - Show pic
+
+After Recommendation
+ - What now
+ - What does it show
+ - Show pic
+
+---------------------------------------------
+Testing: 2-3 min
+
+User Test
+ - Who tests
+ - Results
+ - Use of result
+
+Unit Test
+ - What is it
+ - How we used it
+
+---------------------------------------------
